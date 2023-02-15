@@ -3,6 +3,8 @@ package com.c0d3m4513r.KubeJS_addons;
 import net.minecraftforge.server.permission.nodes.PermissionDynamicContextKey;
 import net.minecraftforge.server.permission.nodes.PermissionNode;
 import net.minecraftforge.server.permission.nodes.PermissionType;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -19,7 +21,8 @@ public final class KubeJSAddons {
         return new PermissionDynamicContextKey<>(type,key, resolver);
     }
 
-    public static <T> T try_catch(Supplier<T> supplier, Function<Exception, Boolean> handleConditional, Function<Exception, T> handle){
+    @Contract(value = "_, _, _ -> param2", pure = true)
+    public static <T> T try_catch(@NotNull Supplier<T> supplier, @NotNull Function<Exception, Boolean> handleConditional, @NotNull Function<Exception, T> handle){
         try{
             return supplier.get();
         }catch(Exception e){
@@ -28,5 +31,10 @@ public final class KubeJSAddons {
             else
                 throw e;
         }
+    }
+
+    @Contract(value = "_ -> fail", pure = true)
+    public static <R, T extends Throwable> R throw_e(@NotNull T t) throws T {
+        throw t;
     }
 }
