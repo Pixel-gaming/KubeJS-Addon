@@ -1,0 +1,1 @@
+allow com.c0d3m4513r.KubeJS_addons
