@@ -1,0 +1,31 @@
+name: Build Gradle project
+
+on:
+  push:
+    branches: [ master, dev ]
+    tags: [ v* ]
+  pull_request:
+    branches: [ master, dev ]
+  workflow_dispatch:
+
+
+jobs:
+  build-gradle-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v2
+      - name: Setup Gradle
+      - name: Java Setup
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+      - name: Run build with Gradle Wrapper
+        uses: gradle/gradle-build-action@v2
+        run: ./gradlew jar
+      - uses: actions/upload-artifact@v3
+        name: upload jar
+        if: ${{ matrix.profile == 'release' }}
+        with:
+          path: |
+            build/libs/KubeJS-Addons-*.jar
